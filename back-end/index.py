@@ -21,7 +21,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             self.send_header('Content-type', 'application/json')
             self.end_headers()
 
-            query = parsed_qs['data']
+            query = parsed_qs['data'][0]
 
             key = os.environ.get('GEOCODE_API_KEY')
 
@@ -36,7 +36,11 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             json_string = json.dumps(result)
             self.wfile.write(json_string.encode())
 
+            print(self.formatted_query)
+            print(self.latitude)
+            print(self.longitude)
             return
+
 
         self.send_response_only(404)
         self.end_headers()
