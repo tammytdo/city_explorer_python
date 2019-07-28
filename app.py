@@ -1,13 +1,21 @@
 from flask import Flask, jsonify, request
+from flask_sqlalchemy import SQLAlchemy
 import requests
 import json
-from models.location import Location
-from models.weather import Forecast
+# from models.location import Location
+# from models.weather import Forecast
 from flask_cors import CORS
 from os import environ
+from flask_migrate import Migrate
+
 
 app = Flask(__name__)
 CORS(app)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+
 
 @app.route('/location')
 def location():
@@ -42,7 +50,5 @@ def weather():
 
     daily_weather = [Forecast(daily).serialize()
                 for daily in forecasts['daily']['data']]
-
-
 
     return json.dumps(daily_weather)
