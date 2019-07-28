@@ -2,6 +2,7 @@
     "_meta": {
         "hash": {
             "sha256": "aaa3f74caae7e15cc57a6cda14768b5ee9d4478310f509ecc4d997d823d7d516"
+
         },
         "pipfile-spec": 6,
         "requires": {
@@ -88,6 +89,7 @@
             ],
             "version": "==2.4.0"
         },
+
         "idna": {
             "hashes": [
                 "sha256:c357b3f628cf53ae2c4c05627ecc484553142ca23264e593d327bcde5e9c3407",
@@ -122,6 +124,7 @@
             ],
             "version": "==1.0.14"
         },
+
         "markupsafe": {
             "hashes": [
                 "sha256:00bc623926325b26bb9605ae9eae8a215691f33cae5df11ca5424f06f2d1f473",

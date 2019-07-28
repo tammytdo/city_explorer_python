@@ -52,3 +52,4 @@ def weather():
                 for daily in forecasts['daily']['data']]
 
     return json.dumps(daily_weather)
+

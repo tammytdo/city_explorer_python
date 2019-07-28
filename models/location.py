@@ -1,5 +1,4 @@
 from app import db
-
 from os import environ
 import json
 import requests
