@@ -1,43 +1,48 @@
-# from flask import Flask, jsonify, request
-# import requests
-# import json
-# from app.models.location import Location
-# from app.models.weather import Forecast
-# from flask_cors import CORS
-# from os import environ
+from flask import Flask, jsonify, request
+import requests
+import json
+from models.location import Location
+from models.weather import Forecast
+from flask_cors import CORS
+from os import environ
 
-# app = Flask(__name__)
-# CORS(app)
+app = Flask(__name__)
+CORS(app)
 
-# @app.route('/location')
-# def location():
-#     query = request.args.get('data')
-#     print('****query****', query)
-#     api_key = environ.get('GEOCODE_API_KEY')
-#     url = f'https://maps.googleapis.com/maps/api/geocode/json?address={query}&key={api_key}'
-#     # https://maps.googleapis.com/maps/api/geocode/json?address=barcelona&key=API_KEY
+@app.route('/location')
+def location():
+    query = request.args.get('data')
+    api_key = environ.get('GEOCODE_API_KEY')
+    url = f'https://maps.googleapis.com/maps/api/geocode/json?address={query}&key={api_key}'
+    # https://maps.googleapis.com/maps/api/geocode/json?address=barcelona&key=API_KEY
 
-#     result = requests.get(url).json()
+    result = requests.get(url).json()
 
-#     formatted_query = result['results'][0]['formatted_address']
-#     latitude = result['results'][0]['geometry']['location']['lat']
-#     longitude = result['results'][0]['geometry']['location']['lng']
+    formatted_query = result['results'][0]['formatted_address']
+    latitude = result['results'][0]['geometry']['location']['lat']
+    longitude = result['results'][0]['geometry']['location']['lng']
 
-#     return f'{formatted_query}, {latitude}, {longitude}'
+    print(f'{formatted_query}, {latitude}, {longitude}')
 
-# @app.route('/weather')
-# def weather():
+    return Location.fetch(query)
 
-#     api_key = environ.get('WEATHER_API_KEY')
-#     url = f'https://api.darksky.net/forecast/{api_key}/{latitude},{longitude}'
-#     #https://api.darksky.net/forecast/WEATHER_API_KEY/41.3850639,2.1734035
+@app.route('/weather')
+def weather():
 
-#     forecasts = requests.get(url).json()
+    latitude = request.args['data[latitude]']
+    longitude = request.args['data[longitude]']
 
-#     daily_weather = [Forecast(daily).serialize()
-#                 for daily in forecasts['daily']['data']]
+    api_key = environ.get('WEATHER_API_KEY')
+    url = f'https://api.darksky.net/forecast/{api_key}/{latitude},{longitude}'
+    #https://api.darksky.net/forecast/WEATHER_API_KEY/41.3850639,2.1734035
 
-#     latitude = request.args['data[latitude]']
-#     longitude = request.args['data[longitude]']
+    #http://localhost:5000/weather?data[latitude]=41.3850639&data[longitude]=2.1734035
 
-#     return json.dumps(daily_weather)
+    forecasts = requests.get(url).json()
+
+    daily_weather = [Forecast(daily).serialize()
+                for daily in forecasts['daily']['data']]
+
+
+
+    return json.dumps(daily_weather)
