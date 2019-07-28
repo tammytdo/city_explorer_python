@@ -12,6 +12,8 @@ requests = "*"
 pytest = "*"
 flask = "*"
 flask-cors = "*"
+sqlalchemy = "*"
+flask-migrate = "*"
 
 [requires]
 python_version = "3.7"
